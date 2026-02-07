@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polnisch Exklusiv v2.9.7</title>
+    <style>
+        :root { 
+            --pl-red: #dc143c; 
+            --pl-white: #ffffff;
+            --gold: #D4AF37; 
+            --btn-height: 44px; 
+        }
+        body {
+            background: #000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; font-family: 'Times New Roman', Times, serif;
+        }
+        /* Optimiert für 6.9 - 7.9 Zoll Geräte */
+        .app-container {
+            width: 420px; 
+            min-height: 750px;
+            margin-top: 20px; 
+            background: radial-gradient(circle at center, #2b0c0c 0%, #000 100%);
+            border: 5px solid var(--pl-red); border-radius: 70px; overflow: hidden;
+            display: flex; flex-direction: column; padding-top: 20px; padding-bottom: 30px;
+            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(220, 20, 60, 0.4);
+        }
+        header { text-align: center; position: relative; padding-bottom: 10px; }
+        .ornament-l, .ornament-r { position: absolute; top: 15px; color: var(--pl-white); font-size: 1.8em; opacity: 0.8; }
+        .ornament-l { left: 40px; } .ornament-r { right: 40px; }
+        header h1 { color: var(--pl-white); margin: 0; font-size: 2em; text-transform: uppercase; letter-spacing: 4px; }
+        .sub-header { color: var(--pl-red); font-size: 0.9em; text-transform: uppercase; font-weight: bold; }
+        .version-info { color: var(--pl-white); font-size: 0.7em; opacity: 0.6; margin-bottom: 10px; }
+        .divider { width: 70%; height: 2px; background: linear-gradient(90deg, transparent, var(--pl-red), var(--pl-white), var(--pl-red), transparent); margin: 5px auto 15px auto; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 30px 15px 30px; }
+        .premium-btn {
+            background: rgba(255,255,255,0.07); color: var(--pl-white); border: 1px solid var(--pl-red);
+            height: var(--btn-height); font-size: 0.85em; font-weight: bold; border-radius: 14px; cursor: pointer; text-transform: uppercase;
+        }
+        
+        .flashcard {
+            width: 340px; height: 180px; background: linear-gradient(145deg, #1a1a1a, #000);
+            border: 2px solid var(--pl-white); border-radius: 40px; margin: 15px auto;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; cursor: pointer; position: relative;
+            transition: transform 0.2s;
+        }
+        .flashcard:active { transform: scale(0.98); }
+
+        .category-label { position: absolute; top: 15px; left: 25px; color: var(--pl-red); font-size: 0.65em; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; }
+        #phrase-pl { font-size: 1.6em; color: var(--pl-white); font-weight: bold; margin-bottom: 4px; padding: 0 15px; }
+        #phrase-phonetic { font-size: 0.9em; color: var(--pl-red); opacity: 0.9; font-style: italic; margin-bottom: 8px; }
+        #phrase-de { font-size: 1em; color: #fff; opacity: 0.7; }
+        .card-counter-inside { position: absolute; bottom: 15px; right: 30px; color: var(--pl-white); font-size: 0.75em; font-weight: bold; }
+        
+        .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 5px 40px; }
+        .ctrl-btn {
+            background: #000; color: var(--pl-white); border: 1px solid var(--pl-red); height: var(--btn-height);
+            border-radius: 18px; font-weight: bold; cursor: pointer; font-size: 0.75em; text-transform: uppercase;
+        }
+        .play-btn { background: var(--pl-red); color: #fff; border: none; box-shadow: 0 4px 10px rgba(220, 20, 60, 0.4); }
+        
+        /* Startbutton analog zur Französisch App */
+        .start-btn-container { padding: 15px 40px; }
+        .start-btn {
+            width: 100%; background: linear-gradient(to right, #dc143c, #8b0000); color: white;
+            border: none; height: 50px; border-radius: 25px; font-weight: 900; 
+            text-transform: uppercase; font-size: 1em; cursor: pointer; letter-spacing: 2px;
+        }
+
+        .menu-footer {
+            width: 200px; margin: 20px auto 5px auto; background: var(--pl-white); color: #000;
+            height: 42px; display: flex; justify-content: center; align-items: center;
+            font-weight: 900; border-radius: 25px; cursor: pointer; text-transform: uppercase; font-size: 0.85em;
+            border: 2px solid var(--pl-red);
+        }
+        .outer-footer { margin: 15px 0 30px 0; color: var(--pl-white); font-size: 0.8em; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <div class="ornament-l">⚪</div>
+        <h1>Polski</h1>
+        <div class="ornament-r">🔴</div>
+        <div class="sub-header">Premium Edition</div>
+        <div class="version-info">Version 2.9.7</div>
+        <div class="divider"></div>
+    </header>
+
+    <div class="menu-grid">
+        <button class="premium-btn" onclick="setCategory('alltag')">Alltag</button>
+        <button class="premium-btn" onclick="setCategory('basis')">Basis</button>
+        <button class="premium-btn" onclick="setCategory('hotel')">Hotel</button>
+        <button class="premium-btn" onclick="setCategory('reise')">Reise</button>
+        <button class="premium-btn" onclick="setCategory('gastro')">Gastro</button>
+        <button class="premium-btn" onclick="setCategory('amt')">Amt</button>
+    </div>
+
+    <div class="flashcard" onclick="nextCard()">
+        <div class="category-label" id="cat-label">START</div>
+        <div id="phrase-pl">Dzień dobry</div>
+        <div id="phrase-phonetic">[Djen dob-ri]</div>
+        <div id="phrase-de">Guten Tag</div>
+        <div class="card-counter-inside" id="counter">1 / 25</div>
+    </div>
+
+    <div class="controls">
+        <button class="ctrl-btn" onclick="prevCard()">Zurück</button>
+        <button class="ctrl-btn play-btn" onclick="speak()">Audio</button>
+        <button class="ctrl-btn" onclick="nextCard()">Vor</button>
+    </div>
+
+    <div class="start-btn-container">
+        <button class="start-btn" onclick="setCategory('welcome')">Start - Menü</button>
+    </div>
+
+    <div class="menu-footer" onclick="setCategory('wissen')">Wissen</div>
+</div>
+
+<div class="outer-footer">(c) 2026 Premium App Polnisch lernen</div>
+
+<script>
+    const data = {
+        welcome: [
+            {pl: "Dzień dobry", ph: "[Djen dob-ri]", de: "Guten Tag"}, {pl: "Witamy", ph: "[Vi-ta-mi]", de: "Willkommen"},
+            {pl: "Cześć", ph: "[Cheshch]", de: "Hallo"}, {pl: "Jak się masz?", ph: "[Yak shye mash]", de: "Wie geht's?"},
+            {pl: "Miło mi", ph: "[Mi-wo mi]", de: "Sehr erfreut"}, {pl: "Dziękuję", ph: "[Djen-ku-ye]", de: "Danke"},
+            {pl: "Proszę", ph: "[Pro-she]", de: "Bitte"}, {pl: "Przepraszam", ph: "[Pshe-pra-sham]", de: "Entschuldigung"},
+            {pl: "Do widzenia", ph: "[Do vi-dze-nya]", de: "Auf Wiedersehen"}, {pl: "Dobry wieczór", ph: "[Dob-ri vye-chur]", de: "Guten Abend"},
+            {pl: "Dobranoc", ph: "[Do-bra-nots]", de: "Gute Nacht"}, {pl: "Tak", ph: "[Tak]", de: "Ja"},
+            {pl: "Nie", ph: "[Nye]", de: "Nein"}, {pl: "Może", ph: "[Mo-zhe]", de: "Vielleicht"},
+            {pl: "Smacznego", ph: "[Smach-ne-go]", de: "Guten Appetit"}, {pl: "Na zdrowie", ph: "[Na zdro-vye]", de: "Prost"},
+            {pl: "Jak masz na imię?", ph: "[Yak mash na i-mye]", de: "Wie heißt du?"}, {pl: "Nie rozumiem", ph: "[Nye ro-zu-myem]", de: "Ich verstehe nicht"},
+            {pl: "Mówisz po polsku?", ph: "[Mu-vish po pol-sku]", de: "Sprichst du Polnisch?"}, {pl: "Ile to kosztuje?", ph: "[I-le to kosh-tu-ye]", de: "Was kostet das?"},
+            {pl: "Pomocy!", ph: "[Po-mo-tsi]", de: "Hilfe!"}, {pl: "Wszystko w porządku", ph: "[Vshist-ko v po-zhon-tku]", de: "Alles okay"},
+            {pl: "Kocham cię", ph: "[Ko-ham tye]", de: "Ich liebe dich"}, {pl: "Powodzenia", ph: "[Po-vo-dze-nya]", de: "Viel Glück"},
+            {pl: "Do jutra", ph: "[Do yu-tra]", de: "Bis morgen"}
+        ],
+        alltag: [
+            {pl: "Co słychać?", ph: "[Tso swi-hach]", de: "Was gibt's Neues?"}, {pl: "Spoko", ph: "[Spo-ko]", de: "Alles cool / Okay"},
+            {pl: "Serio?", ph: "[Se-ryo]", de: "Echt jetzt?"}, {pl: "Super", ph: "[Su-per]", de: "Klasse"},
+            {pl: "Nieważne", ph: "[Nye-vazh-ne]", de: "Egal / Unwichtig"}, {pl: "Masz rację", ph: "[Mash rats-ye]", de: "Du hast recht"},
+            {pl: "Bez jaj!", ph: "[Bez yay]", de: "Ohne Witz!"}, {pl: "Pewnie", ph: "[Pev-nye]", de: "Sicher"},
+            {pl: "Uważaj na siebie", ph: "[U-va-zhay na sye-bye]", de: "Pass auf dich auf"}, {pl: "Daj spokój", ph: "[Day spo-kuy]", de: "Lass gut sein"},
+            {pl: "Nie martw się", ph: "[Nye martf shye]", de: "Mach dir keine Sorgen"}, {pl: "To prawda", ph: "[To prav-da]", de: "Das stimmt"},
+            {pl: "Oczywiście", ph: "[O-chi-vis-tsye]", de: "Natürlich"}, {pl: "Zaraz", ph: "[Za-raz]", de: "Gleich / Sofort"},
+            {pl: "Poczekaj", ph: "[Po-che-kay]", de: "Warte mal"}, {pl: "Chodź tu", ph: "[Hodj tu]", de: "Komm her"},
+            {pl: "Naprawdę?", ph: "[Na-prav-de]", de: "Wirklich?"}, {pl: "Nie ma mowy", ph: "[Nye ma mo-vi]", de: "Auf keinen Fall"},
+            {pl: "Masz czas?", ph: "[Mash chas]", de: "Hast du Zeit?"}, {pl: "Jestem zmęczony", ph: "[Yes-tem zmye-cho-ni]", de: "Ich bin müde"},
+            {pl: "Gdzie jesteś?", ph: "[Gdzye yes-tesh]", de: "Wo bist du?"}, {pl: "Wracam do domu", ph: "[Vra-tsam do do-mu]", de: "Ich gehe nach Hause"},
+            {pl: "Zadzwoń do mnie", ph: "[Za-dzvony do mnye]", de: "Ruf mich an"}, {pl: "Świetnie", ph: "[Shvyet-nye]", de: "Ausgezeichnet"},
+            {pl: "Do zobaczenia", ph: "[Do zo-ba-che-nya]", de: "Man sieht sich"}
+        ],
+        basis: [
+            {pl: "Kto?", ph: "[Kto]", de: "Wer?"}, {pl: "Co?", ph: "[Tso]", de: "Was?"}, {pl: "Gdzie?", ph: "[Gdzye]", de: "Wo?"},
+            {pl: "Kiedy?", ph: "[Kye-di]", de: "Wann?"}, {pl: "Dlaczego?", ph: "[Dla-che-go]", de: "Warum?"}, {pl: "Jak?", ph: "[Yak]", de: "Wie?"},
+            {pl: "Dzisiaj", ph: "[Dzi-syay]", de: "Heute"}, {pl: "Jutro", ph: "[Yu-tro]", de: "Morgen"}, {pl: "Wczoraj", ph: "[Vcho-ray]", de: "Gestern"},
+            {pl: "Teraz", ph: "[Te-raz]", de: "Jetzt"}, {pl: "Później", ph: "[Puz-nyey]", de: "Später"}, {pl: "Tutaj", ph: "[Tu-tay]", de: "Hier"},
+            {pl: "Tam", ph: "[Tam]", de: "Dort"}, {pl: "Dużo", ph: "[Du-zho]", de: "Viel"}, {pl: "Mało", ph: "[Ma-wo]", de: "Wenig"},
+            {pl: "Bardzo", ph: "[Bar-dzo]", de: "Sehr"}, {pl: "Szybko", ph: "[Ship-ko]", de: "Schnell"}, {pl: "Wolno", ph: "[Vol-no]", de: "Langsam"},
+            {pl: "Dobry", ph: "[Dob-ri]", de: "Gut"}, {pl: "Zły", ph: "[Zwi]", de: "Schlecht"}, {pl: "Ciepło", ph: "[Cye-pwo]", de: "Warm"},
+            {pl: "Zimno", ph: "[Zim-no]", de: "Kalt"}, {pl: "Wszystko", ph: "[Vshist-ko]", de: "Alles"}, {pl: "Nic", ph: "[Nits]", de: "Nichts"},
+            {pl: "Zawsze", ph: "[Zav-she]", de: "Immer"}
+        ],
+        hotel: [
+            {pl: "Pokój", ph: "[Po-kuy]", de: "Zimmer"}, {pl: "Rezerwacja", ph: "[Re-zer-va-tsya]", de: "Reservierung"},
+            {pl: "Klucz", ph: "[Kluch]", de: "Schlüssel"}, {pl: "Łazienka", ph: "[Wa-zyen-ka]", de: "Badezimmer"},
+            {pl: "Ręcznik", ph: "[Ren-chnik]", de: "Handtuch"}, {pl: "Pościel", ph: "[Posh-chyel]", de: "Bettwäsche"},
+            {pl: "Klimatyzacja", ph: "[Kli-ma-ti-za-tsya]", de: "Klimaanlage"}, {pl: "Piętro", ph: "[Pyen-tro]", de: "Stockwerk"},
+            {pl: "Winda", ph: "[Vin-da]", de: "Aufzug"}, {pl: "Recepcja", ph: "[Re-tsep-tsya]", de: "Rezeption"},
+            {pl: "Śniadanie", ph: "[Shnya-da-nye]", de: "Frühstück"}, {pl: "Wi-Fi", ph: "[Vaj-faj]", de: "WLAN"},
+            {pl: "Hasło", ph: "[Has-wo]", de: "Passwort"}, {pl: "Gdzie jest hotel?", ph: "[Gdzye yest ho-tel]", de: "Wo ist das Hotel?"},
+            {pl: "Mam rezerwację", ph: "[Mam re-zer-va-tsye]", de: "Ich habe eine Reservierung"}, {pl: "Jednoosobowy", ph: "[Yed-no-o-so-bo-vi]", de: "Einzelzimmer"},
+            {pl: "Dwuosobowy", ph: "[Dvu-o-so-bo-vi]", de: "Doppelzimmer"}, {pl: "Bagaż", ph: "[Ba-gazh]", de: "Gepäck"},
+            {pl: "Garaż", ph: "[Ga-razh]", de: "Garage"}, {pl: "Pranie", ph: "[Pra-nye]", de: "Wäsche"},
+            {pl: "Budzenie", ph: "[Bu-dze-nye]", de: "Weckruf"}, {pl: "Karta kredytowa", ph: "[Kar-ta kre-di-to-va]", de: "Kreditkarte"},
+            {pl: "Czy jest wolne?", ph: "[Chi yest vol-ne]", de: "Ist etwas frei?"}, {pl: "O której godzinie?", ph: "[O ktu-rey go-dzi-nye]", de: "Um wie viel Uhr?"},
+            {pl: "Rachunek", ph: "[Ra-hu-nek]", de: "Rechnung"}
+        ],
+        reise: [
+            {pl: "Samochód", ph: "[Sa-mo-hut]", de: "Auto"}, {pl: "Pociąg", ph: "[Po-tsyong]", de: "Zug"},
+            {pl: "Dworzec", ph: "[Dvo-zhets]", de: "Bahnhof"}, {pl: "Lotnisko", ph: "[Lot-nis-ko]", de: "Flughafen"},
+            {pl: "Samolot", ph: "[Sa-mo-lot]", de: "Flugzeug"}, {pl: "Bilet", ph: "[Bi-let]", de: "Fahrkarte"},
+            {pl: "Gdzie jest...?", ph: "[Gdzye yest]", de: "Wo ist...?"}, {pl: "W lewo", ph: "[V le-vo]", de: "Links"},
+            {pl: "W prawo", ph: "[V pra-vo]", de: "Rechts"}, {pl: "Prosto", ph: "[Pros-to]", de: "Geradeaus"},
+            {pl: "Daleko", ph: "[Da-le-ko]", de: "Weit"}, {pl: "Blisko", ph: "[Blis-ko]", de: "Nah"},
+            {pl: "Mapa", ph: "[Ma-pa]", de: "Landkarte"}, {pl: "Paliwo", ph: "[Pa-li-vo]", de: "Treibstoff"},
+            {pl: "Benzyna", ph: "[Ben-zi-na]", de: "Benzin"}, {pl: "Olej", ph: "[O-ley]", de: "Öl"},
+            {pl: "Autostrada", ph: "[Au-tos-tra-da]", de: "Autobahn"}, {pl: "Granica", ph: "[Gra-ni-tsa]", de: "Grenze"},
+            {pl: "Paszport", ph: "[Pash-port]", de: "Reisepass"}, {pl: "Walizka", ph: "[Va-liz-ka]", de: "Koffer"},
+            {pl: "Taxi", ph: "[Tak-si]", de: "Taxi"}, {pl: "Autobus", ph: "[Au-to-bus]", de: "Bus"},
+            {pl: "Rower", ph: "[Ro-ver]", de: "Fahrrad"}, {pl: "Spacer", ph: "[Spa-tser]", de: "Spaziergang"},
+            {pl: "Miłej podróży", ph: "[Mi-wey po-dru-zhi]", de: "Gute Reise"}
+        ],
+        gastro: [
+            {pl: "Smacznego", ph: "[Smach-ne-go]", de: "Guten Appetit"}, {pl: "Karta dań", ph: "[Kar-ta dany]", de: "Speisekarte"},
+            {pl: "Woda", ph: "[Vo-da]", de: "Wasser"}, {pl: "Chleb", ph: "[Hleb]", de: "Brot"},
+            {pl: "Zupa", ph: "[Zu-pa]", de: "Suppe"}, {pl: "Mięso", ph: "[Mye-so]", de: "Fleisch"},
+            {pl: "Ryba", ph: "[Ri-ba]", de: "Fisch"}, {pl: "Warzywa", ph: "[Va-zhi-va]", de: "Gemüse"},
+            {pl: "Owoce", ph: "[O-vo-tse]", de: "Obst"}, {pl: "Kawa", ph: "[Ka-va]", de: "Kaffee"},
+            {pl: "Herbata", ph: "[Her-ba-ta]", de: "Tee"}, {pl: "Piwo", ph: "[Pi-vo]", de: "Bier"},
+            {pl: "Wino", ph: "[Vi-no]", de: "Wein"}, {pl: "Sól", ph: "[Sul]", de: "Salz"},
+            {pl: "Pieprz", ph: "[Pyepsh]", de: "Pfeffer"}, {pl: "Cukier", ph: "[Tsu-kyer]", de: "Zucker"},
+            {pl: "Mleko", ph: "[Mle-ko]", de: "Milch"}, {pl: "Sok", ph: "[Sok]", de: "Saft"},
+            {pl: "Widelec", ph: "[Vi-de-lets]", de: "Gabel"}, {pl: "Nóż", ph: "[Nuzh]", de: "Messer"},
+            {pl: "Łyżka", ph: "[Wizh-ka]", de: "Löffel"}, {pl: "Talerz", ph: "[Ta-lesh]", de: "Teller"},
+            {pl: "Rachunek poproszę", ph: "[Ra-hu-nek po-pro-she]", de: "Die Rechnung bitte"}, {pl: "Zostawić napiwek", ph: "[Zos-ta-vich na-pi-vek]", de: "Trinkgeld geben"},
+            {pl: "Pyszne!", ph: "[Pish-ne]", de: "Köstlich!"}
+        ],
+        amt: [
+            {pl: "Policja", ph: "[Po-li-tsya]", de: "Polizei"}, {pl: "Lekarz", ph: "[Le-kash]", de: "Arzt"},
+            {pl: "Szpital", ph: "[Shpi-tal]", de: "Krankenhaus"}, {pl: "Apteka", ph: "[Ap-te-ka]", de: "Apotheke"},
+            {pl: "Ambasada", ph: "[Am-ba-sa-da]", de: "Botschaft"}, {pl: "Bank", ph: "[Bank]", de: "Bank"},
+            {pl: "Poczta", ph: "[Poch-ta]", de: "Post"}, {pl: "Pieniądze", ph: "[Pye-nyon-dze]", de: "Geld"},
+            {pl: "Urząd", ph: "[U-zhont]", de: "Amt / Behörde"}, {pl: "Formularz", ph: "[For-mu-lash]", de: "Formular"},
+            {pl: "Podpis", ph: "[Pod-pis]", de: "Unterschrift"}, {pl: "Dowód osobisty", ph: "[Do-vut o-so-bis-ti]", de: "Personalausweis"},
+            {pl: "Zgubiłem portfel", ph: "[Zgu-bi-wem port-fel]", de: "Portemonnaie verloren"}, {pl: "Pomocy!", ph: "[Po-mo-tsi]", de: "Hilfe!"},
+            {pl: "Prawnik", ph: "[Prav-nik]", de: "Anwalt"}, {pl: "Tłumacz", ph: "[Twu-mach]", de: "Dolmetscher"},
+            {pl: "Ubezpieczenie", ph: "[U-bez-pye-che-nye]", de: "Versicherung"}, {pl: "Wypadek", ph: "[Vi-pa-dek]", de: "Unfall"},
+            {pl: "Złodziej", ph: "[Zwo-dzyey]", de: "Dieb"}, {pl: "Sklep", ph: "[Sklep]", de: "Laden"},
+            {pl: "Godziny otwarcia", ph: "[Go-dzi-ni ot-var-cha]", de: "Öffnungszeiten"}, {pl: "Wiza", ph: "[Vi-za]", de: "Visum"},
+            {pl: "Dokumenty", ph: "[Do-ku-men-ti]", de: "Dokumente"}, {pl: "Telefon alarmowy", ph: "[Te-le-fon a-lar-mo-vi]", de: "Notrufnummer"},
+            {pl: "Proszę czekać", ph: "[Pro-she che-kach]", de: "Bitte warten"}
+        ],
+        wissen: [
+            {pl: "Filozofia", ph: "[Fi-lo-zo-fya]", de: "Philosophie"}, {pl: "Prawda", ph: "[Prav-da]", de: "Wahrheit"},
+            {pl: "Czas", ph: "[Chas]", de: "Zeit"}, {pl: "Wszechświat", ph: "[Vsheh-shvyat]", de: "Universum"},
+            {pl: "Myśl", ph: "[Mishl]", de: "Gedanke"}, {pl: "Życie", ph: "[Zhi-che]", de: "Leben"},
+            {pl: "Śmierć", ph: "[Shmyerch]", de: "Tod"}, {pl: "Wolność", ph: "[Vol-noshch]", de: "Freiheit"},
+            {pl: "Sprawiedliwość", ph: "[Spra-vye-dli-voshch]", de: "Gerechtigkeit"}, {pl: "Piękno", ph: "[Pyenk-no]", de: "Schönheit"},
+            {pl: "Dobro", ph: "[Dob-ro]", de: "Das Gute"}, {pl: "Zło", ph: "[Zwo]", de: "Das Böse"},
+            {pl: "Człowiek", ph: "[Chwo-vyek]", de: "Mensch"}, {pl: "Natura", ph: "[Na-tu-ra]", de: "Natur"},
+            {pl: "Nauka", ph: "[Na-u-ka]", de: "Wissenschaft"}, {pl: "Sztuka", ph: "[Shtu-ka]", de: "Kunst"},
+            {pl: "Kultura", ph: "[Kul-tu-ra]", de: "Kultur"}, {pl: "Historia", ph: "[His-to-rya]", de: "Geschichte"},
+            {pl: "Przyszłość", ph: "[Pshi-shwoshch]", de: "Zukunft"}, {pl: "Przeszłość", ph: "[Pshe-shwoshch]", de: "Vergangenheit"},
+            {pl: "Szczęście", ph: "[Shchen-shche]", de: "Glück"}, {pl: "Wiedza", ph: "[Vye-dza]", de: "Wissen"},
+            {pl: "Rozum", ph: "[Ro-zum]", de: "Verstand"}, {pl: "Logika", ph: "[Lo-gi-ka]", de: "Logik"},
+            {pl: "Etyka", ph: "[E-ti-ka]", de: "Ethik"}
+        ]
+    };
+
+    let currentCat = 'welcome'; let index = 0;
+
+    function setCategory(cat) { 
+        currentCat = cat; 
+        index = 0; 
+        updateCard(); 
+    }
+
+    function updateCard() {
+        const item = data[currentCat][index];
+        document.getElementById('cat-label').innerText = currentCat;
+        document.getElementById('phrase-pl').innerText = item.pl;
+        document.getElementById('phrase-phonetic').innerText = item.ph;
+        document.getElementById('phrase-de').innerText = item.de;
+        document.getElementById('counter').innerText = `${index + 1} / ${data[currentCat].length}`;
+        // Audio bei jedem Kartenwechsel automatisch abspielen
+        speak();
+    }
+
+    function nextCard() { 
+        index = (index + 1) % data[currentCat].length; 
+        updateCard(); 
+    }
+
+    function prevCard() { 
+        index = (index - 1 + data[currentCat].length) % data[currentCat].length; 
+        updateCard(); 
+    }
+
+    function speak() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // Vorherige Audio stoppen
+            const text = document.getElementById('phrase-pl').innerText;
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'pl-PL';
+            msg.rate = 0.8;
+            window.speechSynthesis.speak(msg);
+        }
+    }
+
+    window.onload = () => updateCard();
+</script>
+
+</body>
+</html>
